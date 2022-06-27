@@ -27,6 +27,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import com.example.android.trackmysleepquality.R
 import com.example.android.trackmysleepquality.SleepNightAdapter
 import com.example.android.trackmysleepquality.SleepNightListener
@@ -67,6 +68,13 @@ class SleepTrackerFragment : Fragment() {
         binding.sleepTrackerViewModel = viewModel
 
         val manager = GridLayoutManager(context, 3)
+        manager.spanSizeLookup = object : SpanSizeLookup() {
+            override fun getSpanSize(position: Int) = when (position) {
+                    0 -> 3 // make user header takes the entire span width
+                    else -> 1
+            }
+
+        }
         binding.sleepList.layoutManager = manager
 
         val adapter = SleepNightAdapter(SleepNightListener { nightId ->
